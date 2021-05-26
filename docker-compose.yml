@@ -1,0 +1,53 @@
+version: '3.3'
+
+services:
+    balance-postgres:
+        container_name: 'balance_postgresql'
+        image: postgres:alpine
+        restart: unless-stopped
+        volumes:
+            - database:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: salary
+            POSTGRES_PASSWORD: salary
+            POSTGRES_DB: salary_db
+        ports:
+            - 54321:5432
+    balance-php-fpm:
+        container_name: 'balance_php_fpm'
+        build:
+            context: ./docker/dev
+            dockerfile: php-fpm.docker
+        restart: unless-stopped
+        volumes:
+            - "./app/:/app"
+            - "composer:/root/.composer/cache"
+        depends_on:
+            - balance-postgres
+    balance-php-cli:
+        container_name: 'balance_php_cli'
+        build:
+            context: ./docker/dev
+            dockerfile: php-cli.docker
+        restart: unless-stopped
+        volumes:
+            - "./app/:/app:cached"
+            - "composer:/root/.composer/cache"
+        depends_on:
+            - balance-postgres
+    balance-nginx:
+        container_name: 'balance_nginx'
+        build:
+            context: ./docker/dev
+            dockerfile: nginx.docker
+        restart: unless-stopped
+        volumes:
+            - "./app/:/app"
+        ports:
+            - 8080:80
+        depends_on:
+            - balance-php-fpm
+
+volumes:
+    database:
+    composer:

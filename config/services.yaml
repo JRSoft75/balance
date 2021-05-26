@@ -29,3 +29,17 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    balance.userBalance:
+        class: App\Method\UserBalanceMethod
+        public: false
+        tags: [ { method: 'balance.userBalance', name: 'json_rpc_http_server.jsonrpc_method' } ]
+
+        balance.history:
+            class: App\Method\BalanceHistoryMethod
+            public: false
+            tags: [ { method: 'balance.history', name: 'json_rpc_http_server.jsonrpc_method' } ]
+
+        mapping_aware_service:
+            class: App\Collector\MappingCollector
+            tags: [ 'json_rpc_http_server.method_aware' ]
