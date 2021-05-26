@@ -51,3 +51,7 @@ services:
 volumes:
     database:
     composer:
+
+networks:
+    default:
+        internal: true
