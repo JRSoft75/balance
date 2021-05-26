@@ -35,11 +35,11 @@ services:
         public: false
         tags: [ { method: 'balance.userBalance', name: 'json_rpc_http_server.jsonrpc_method' } ]
 
-        balance.history:
-            class: App\Method\BalanceHistoryMethod
-            public: false
-            tags: [ { method: 'balance.history', name: 'json_rpc_http_server.jsonrpc_method' } ]
+    balance.history:
+        class: App\Method\BalanceHistoryMethod
+        public: false
+        tags: [ { method: 'balance.history', name: 'json_rpc_http_server.jsonrpc_method' } ]
 
-        mapping_aware_service:
-            class: App\Collector\MappingCollector
-            tags: [ 'json_rpc_http_server.method_aware' ]
+    mapping_aware_service:
+        class: App\Collector\MappingCollector
+        tags: [ 'json_rpc_http_server.method_aware' ]
